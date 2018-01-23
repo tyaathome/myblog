@@ -17,15 +17,25 @@ def home():
 def login():
     form = LoginForm(request.form)
     if request.method == 'POST':
+        message = None
         if form.validate():
-            #session['username'] = form.username.data
             username = form.username.data
             user = User.query.filter_by(username = username).first()
             if user != None:
+                session['username'] = username
                 user.logincount += 1
                 db.session.add(user)
                 db.session.commit()
-            return redirect(url_for('home'))
+                return redirect(url_for('home'))
+            else:
+                message = u'用户不存在'
         else:
-            print(form.errors)
+            message = form.errors['username'][0]
+            usernameMessage = form.errors['username'][0]
+            passwordMessage = form.errors['password'][0]
+            if usernameMessage:
+                message = usernameMessage
+            elif passwordMessage:
+                message = passwordMessage
+        return render_template('login.html', form = form, message = message)
     return render_template('login.html', form = form)

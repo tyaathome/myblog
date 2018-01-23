@@ -14,4 +14,7 @@
             <td><input type="submit" value="提交"></td>
         </table>
     </form>
+    {% if message %}
+        <p>{{ message }}</p>
+    {% endif %}
 {% endblock %}
