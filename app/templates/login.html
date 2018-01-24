@@ -2,19 +2,16 @@
 {% block content %}
     <form action="" method="post">
         {{ form.csrf_token }}
-        <table>
-            <tr>
-                <td>{{ form.username.label }}</td>
-                <td>{{ form.username() }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.password.label }}</td>
-                <td>{{ form.password() }}</td>
-            </tr>
-            <td><input type="submit" value="提交"></td>
-        </table>
+        {{ form.username.label }}
+        {{ form.username() }}
+        <br>
+        {{ form.password.label }}
+        {{ form.password() }}
+        <br><br>
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+        <input type="submit" value="提交">
     </form>
-    {% if message %}
-        <p>{{ message }}</p>
-    {% endif %}
+
 {% endblock %}

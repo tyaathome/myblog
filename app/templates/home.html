@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>hello, {{ session['username'] }}!</h1>
-    <form method="post" action="/">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-    </form>
+    {% if username %}
+        <h1>Hello, {{ username }}!</h1>
+    {% else %}
+        <h1>登录已过期!</h1>
+        <a href={{ url_for('index') }}>跳转首页</a>
+    {% endif %}
 {% endblock %}
