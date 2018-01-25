@@ -1,5 +1,5 @@
 import time
-from flask import render_template, request, redirect, session, url_for, Response, make_response, current_app
+from flask import render_template, request, redirect, session, url_for, Response, make_response, current_app, Blueprint
 from sqlalchemy import func
 
 from app import app, db
@@ -7,19 +7,19 @@ from app.forms import LoginForm, SignForm
 from app.models import User
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+user = Blueprint('user', __name__,
+                 template_folder='templates',
+                 static_folder='static')
 
-@app.route('/home')
+@user.route('/home')
 def home():
     username = request.cookies.get('username')
-    return render_template('home.html', username = username)
+    return render_template('/user/home.html', username = username)
 
-@app.route('/login', methods = ['GET', 'POST'])
+@user.route('/login', methods = ['GET', 'POST'])
 def login():
     if checkLogin():
-        return redirect(url_for('home'))
+        return redirect(url_for('.home'))
     else:
         form = LoginForm(request.form)
         if request.method == 'POST':
@@ -32,15 +32,15 @@ def login():
                     user.logincount += 1
                     db.session.add(user)
                     db.session.commit()
-                    response = make_response(redirect(url_for('home')))
+                    response = make_response(redirect(url_for('.home')))
                     response.set_cookie('username',value=username, expires=time.time()+60)
                     return response
                 else:
                     messages.append('账号或密码错误')
             else:
                 messages = [r for k, v in form.errors.items() for r in v]
-            return render_template('login.html', form = form, messages = messages)
-        return render_template('login.html', form = form)
+            return render_template('/user/login.html', form = form, messages = messages)
+        return render_template('/user/login.html', form = form)
 
 def checkLogin():
     username = request.cookies.get('username')
@@ -49,7 +49,7 @@ def checkLogin():
     else:
         return False
 
-@app.route('/sign', methods=['GET', 'POST'])
+@user.route('/sign', methods=['GET', 'POST'])
 def sign():
     form = SignForm(request.form)
     if request.method == 'POST':
@@ -65,7 +65,7 @@ def sign():
                     messages.append('该用户已存在')
                 if user2:
                     messages.append('该邮箱已存在')
-                return render_template('sign.html', form = form, messages = messages)
+                return render_template('/user/sign.html', form = form, messages = messages)
             id = db.session.query(func.max(User.id)).scalar()
             if not id:
                 id = 0
@@ -73,13 +73,13 @@ def sign():
             user = User(id = id, username = username, email = email, password = password, logincount = 0)
             db.session.add(user)
             db.session.commit()
-            return redirect(url_for('login'))
+            return redirect(url_for('.login'))
         else:
             messages = [r for k, v in form.errors.items() for r in v]
-        return render_template('sign.html', form = form, messages = messages)
-    return render_template('sign.html', form = form)
+        return render_template('/user/sign.html', form = form, messages = messages)
+    return render_template('/user/sign.html', form = form)
 
-@app.route('/logout', methods=['GET', 'POST'])
+@user.route('/logout', methods=['GET', 'POST'])
 def logout():
     response = make_response(redirect(url_for('index')))
     response.set_cookie('username', value='', expires=0)

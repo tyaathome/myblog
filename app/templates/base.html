@@ -7,9 +7,9 @@
 <body>
 <h1>MyBlog</h1>
 {% if username %}
-    <a href="/logout">Logout</a>
+    <a href={{ url_for('user.logout') }}>Logout</a>
 {% else %}
-    <a href="/login">Login</a> <a href="/sign">Sign</a>
+    <a href={{ url_for('user.login') }}>Login</a> <a href={{ url_for('user.sign') }}>Sign</a>
 {% endif %}
     {% block content %}{% endblock %}
 </body>
