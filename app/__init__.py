@@ -2,13 +2,16 @@ from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
 
+
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 csrf = CSRFProtect(app)
 
-from app.user.user import user
+from app.views.user.user import user
+from app.views.article.article import article
 app.register_blueprint(user, url_prefix = '/user')
+app.register_blueprint(article, url_prefix = '/article')
 
 from app import models
 

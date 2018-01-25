@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1>MyBlog</h1>
+{% block js %}{% endblock %}
 {% if username %}
     <a href={{ url_for('user.logout') }}>Logout</a>
 {% else %}
