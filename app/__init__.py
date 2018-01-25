@@ -1,14 +1,12 @@
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
-
+from flaskext.markdown import Markdown
 
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 csrf = CSRFProtect(app)
-from flaskext.markdown import Markdown
-
 md = Markdown(app)
 
 from app.views.user.user import user
