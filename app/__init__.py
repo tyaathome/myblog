@@ -7,6 +7,9 @@ app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 csrf = CSRFProtect(app)
+from flaskext.markdown import Markdown
+
+md = Markdown(app)
 
 from app.views.user.user import user
 from app.views.article.article import article

@@ -16,5 +16,4 @@ class SignForm(FlaskForm):
 class ArticleForm(FlaskForm):
     title = StringField(u'文章标题', validators=[DataRequired(message=u'标题未填'), length(min=1, max=80, message=u'标题最大长度80')])
     content = TextAreaField(u'内容', validators=[DataRequired()])
-    tag = StringField(u'标签', validators=[length(min=1, max=80, message=u'标签最大长度80')])
-
+    #tag = StringField(u'标签')
