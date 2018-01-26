@@ -2,35 +2,12 @@
 {% block content %}
     <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.preview.css') }}" />
-    <div class="row">
-        <h1 class="text-center">Edit Post</h1>
-    </div>
-
-    <form method="post">
-        {% if form %}
-            {{ form.csrf_token }}
-            {{ form.title(class_='form-control') }}
-            {% if not session['is_preview'] %}
-                <div id="editormd" class="form-control">
-                    {{ form.content(style="display:none;") }}
-                </div>
-            {% else %}
-                {% if content %}
-                    <div id="doc-content">
-                        {{ content|markdown|safe }}
-                    </div>
-                {% endif %}
-            {% endif %}
-            {{ form.commit() }}
-            {% if not session['is_preview'] %}
-                {{ form.preview() }}
-            {% else %}
-                {{ form.edit() }}
-            {% endif %}
-        {% endif %}
-    </form>
+    {% if article %}
+        <div id="doc-content">
+            {{ article.content|markdown|safe }}
+        </div>
+    {% endif %}
 {% endblock %}
-
 {% block js %}
     <script src="{{ url_for('static',filename='editormd/editormd.min.js') }}"></script>
     <script src="{{ url_for('static',filename='editormd/examples/js/jquery.min.js') }}"></script>
@@ -66,5 +43,4 @@
                 codeFold: true,
             });});
     </script>
-
 {% endblock %}

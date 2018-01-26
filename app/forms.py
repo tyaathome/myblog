@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, TextAreaField
+from wtforms import StringField, PasswordField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, length, email, EqualTo
 
 
@@ -15,5 +15,8 @@ class SignForm(FlaskForm):
 
 class ArticleForm(FlaskForm):
     title = StringField(u'文章标题', validators=[DataRequired(message=u'标题未填'), length(min=1, max=80, message=u'标题最大长度80')])
-    content = TextAreaField(u'内容', validators=[DataRequired()])
+    content = TextAreaField(u'内容')
+    commit = SubmitField('commit')
+    preview = SubmitField('preview')
+    edit = SubmitField('edit')
     #tag = StringField(u'标签')

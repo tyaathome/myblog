@@ -33,7 +33,7 @@ def login():
                     db.session.add(user)
                     db.session.commit()
                     response = make_response(redirect(url_for('.home')))
-                    response.set_cookie('username',value=username, expires=time.time()+10*60)
+                    response.set_cookie('username',value=username, expires=time.time()+24*60*60)
                     return response
                 else:
                     messages.append('账号或密码错误')

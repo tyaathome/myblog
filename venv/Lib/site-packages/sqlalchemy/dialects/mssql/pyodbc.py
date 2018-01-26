@@ -114,7 +114,6 @@ class _ms_numeric_pyodbc(object):
         def process(value):
             if self.asdecimal and \
                     isinstance(value, decimal.Decimal):
-
                 adjusted = value.adjusted()
                 if adjusted < 0:
                     return self._small_dec_to_string(value)
@@ -299,7 +298,8 @@ class MSDialect_pyodbc(PyODBCConnector, MSDialect):
         if isinstance(e, self.dbapi.Error):
             for code in (
                     '08S01', '01002', '08003', '08007',
-                    '08S02', '08001', 'HYT00', 'HY010'):
+                    '08S02', '08001', 'HYT00', 'HY010',
+                    '10054'):
                 if code in str(e):
                     return True
         return super(MSDialect_pyodbc, self).is_disconnect(

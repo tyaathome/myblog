@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import CSRFProtect
 from flaskext.markdown import Markdown
@@ -18,4 +18,8 @@ from app import models
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    username = request.cookies.get('username')
+    if username:
+        return redirect(url_for('user.home'))
+    else:
+        return render_template('index.html')
