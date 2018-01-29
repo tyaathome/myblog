@@ -1,3 +1,6 @@
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import backref
+
 from app import db
 
 
@@ -8,6 +11,7 @@ class User(db.Model):
     email = db.Column(db.String(320), unique=True)
     password = db.Column(db.String(32), nullable=False)
     logincount = db.Column(db.Integer)
+    articles = db.relationship('Article', lazy="dynamic")
     def __repr__(self):
         return '<User %r>' % self.username
 
@@ -21,6 +25,7 @@ class Article(db.Model):
     edit_time = db.Column(db.DateTime)
     tag = db.Column(db.String(80))
     view_count = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, ForeignKey('users.id'))
     def __repr__(self):
         return '<Article %r>' % self.title
 
